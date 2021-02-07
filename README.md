@@ -4,20 +4,19 @@ Using the IBM Blockchain Platform to create a blockchain-based Competence Center
 
 ## How to use
 
-### Requirements
-
-- MacOS
-- Git
-- VSCode
-- Docker
-- IBM Blockchain Platform vscode extension
-- REST Client vscode extension
-
 ### Knowledge Requirements
 
 - Blockchain
-- Hyperledger Fabric
+- [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/key_concepts.html)
 - Docker
+
+### Requirements
+
+- [Git](https://git-scm.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- `IBM Blockchain Platform` Visual Studio Code extension
+- `REST Client for Visual Studio Code` Visual Studio Code extension
 
 ### Getting Started
 
@@ -69,3 +68,24 @@ Using the IBM Blockchain Platform to create a blockchain-based Competence Center
   - Run `npm start` to start the API using `serverless offline`
   - Wait until the API is started and open the `apis/assets/requests/request.http` in vscode
   - Click on each API to test them
+
+- What now? Ticketing system should process tickets as follows
+  - Tickets contain user info
+  - Tickets can contain one more more `requests`
+  - Request types
+    - CC request
+    - Free Trial
+    - Cloud Attach Offer
+  - Tickets go through specific flows
+    - Requester create a ticket and add one or more requests
+    - Requester references a Salesforce account or opportunity (automatically assigns SC & AE)
+    - Approver(s) review the ticket and approves or rejects it
+    - Approver(s) assign program manager and agents (team members)
+  - Access Permissions
+    - Admins: full read/write access
+    - Approvers: full read/write access
+    - Program Managers: full read/write access to tickets they are assigned to
+    - Assigned SCs: full read/write access to tickets they are assigned to
+    - AEs: read access to tickets they are assigned to
+    - External: read access to all tickets
+  - How to deal with regions?
