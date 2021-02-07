@@ -1,6 +1,6 @@
 # ccTickets
 
-Using the IBM Blockchain Platform (commercial distribution of [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/key_concepts.html))) to create a blockchain-based Competence Center ticketing system.
+Using the IBM Blockchain Platform (commercial distribution of [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/key_concepts.html)) to create a blockchain-based Competence Center ticketing system.
 
 ## How to use
 
