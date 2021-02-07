@@ -1,0 +1,25 @@
+{
+  "name": "libs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dynamodb-helper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "app-root-path": "^3.0.0",
+    "async": "^3.2.0",
+    "cli-color": "^2.0.0",
+    "js-yaml": "^3.14.0",
+    "jwt-decode": "^2.2.0",
+    "request": "^2.88.2",
+    "tracer": "^1.1.3",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.801.0"
+  }
+}

@@ -1,0 +1,79 @@
+service: my-assets-api
+
+custom:
+  serverless-offline:
+    httpPort: 4000
+    useChildProcesses: true
+    noAuth: true
+  prune:
+    automatic: true
+    number: 1
+  cors-config:
+    origins:
+      - '*'
+    headers:
+      - Content-Type
+      - X-Amz-Date
+      - Authorization
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Amz-User-Agent
+      - env
+      - token
+    allowCredentials: false
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  versionFunctions: false
+  profile: genesys
+  stage: dev
+  region: eu-central-1
+  tracing:
+    lambda: true
+  logRetentionInDays: 30
+  environment:
+    STAGE: ${opt:stage, self:provider.stage}
+
+functions:
+  getAsset:
+    handler: handler.getAsset
+    events:
+      - http:
+          path: assets/{id}
+          method: get
+          cors: ${self:custom.cors-config}
+  createAsset:
+    handler: handler.createAsset
+    events:
+      - http:
+          path: assets
+          method: post
+          cors: ${self:custom.cors-config}
+  updateAsset:
+    handler: handler.updateAsset
+    events:
+      - http:
+          path: assets/{id}
+          method: put
+          cors: ${self:custom.cors-config}
+  deleteAsset:
+    handler: handler.deleteAsset
+    events:
+      - http:
+          path: assets/{id}
+          method: delete
+          cors: ${self:custom.cors-config}
+
+package:
+  exclude:
+    - .nyc_output/**
+    - coverage/**
+    - test/**
+    - .git/**
+    - serverless.yml
+    - .serverless/**
+    - requests.http
+
+plugins:
+  - serverless-offline

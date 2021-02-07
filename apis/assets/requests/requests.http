@@ -1,0 +1,20 @@
+### Get Asset
+GET {{ja_basePath}}/assets/001
+
+### Create Asset
+POST {{ja_basePath}}/assets
+
+{
+  "id": "001",
+  "value": "Hello test!"
+}
+
+### Update Asset
+PUT {{ja_basePath}}/assets/001
+
+{
+  "value": "Hello test (updated)!"
+}
+
+### Delete Asset
+DELETE {{ja_basePath}}/assets/001
