@@ -1,6 +1,6 @@
 # ccTickets
 
-Using the IBM Blockchain Platform to create a blockchain-based Competence Center ticketing system
+Using the IBM Blockchain Platform (commercial distribution of [Hyperledger Fabric](https://hyperledger-fabric.readthedocs.io/en/latest/key_concepts.html))) to create a blockchain-based Competence Center ticketing system.
 
 ## How to use
 
@@ -72,6 +72,9 @@ Using the IBM Blockchain Platform to create a blockchain-based Competence Center
 - What now? Ticketing system should process tickets as follows
   - Tickets contain user info
   - Tickets can contain one more more `requests`
+  - Each field should be tagged for PII
+  - Routing should occur via 3rd party (GC generic objects?)
+  - Each action should be logged anonymously
   - Request types
     - CC request
     - Free Trial
