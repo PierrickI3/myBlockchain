@@ -18,6 +18,10 @@ Using the IBM Blockchain Platform (commercial distribution of [Hyperledger Fabri
 - `IBM Blockchain Platform` Visual Studio Code extension
 - `REST Client for Visual Studio Code` Visual Studio Code extension
 
+Windows only:
+
+- Download [OpenSSL](https://web.archive.org/web/20191113082429/http://slproweb.com/download/Win64OpenSSL-1_0_2t.exe) and install it in the `C:\OpenSSL-Win64` directory
+
 ### Getting Started
 
 - Clone this repo and run `npm i` in the `apis` and `asset` folders
@@ -44,25 +48,31 @@ Using the IBM Blockchain Platform (commercial distribution of [Hyperledger Fabri
   - Select the `MyAsset` smart contract
   - In the new window, select the `createMyAsset` transaction
   - In the `Transaction arguments` textbox, enter:
+
     ```json
     {
       "myAssetId": "001",
       "value": "Test asset 001 "
     }
     ```
+
   - Click on `Submit transaction` (use `Evaluate transaction` when the operation does not require a change in the blockchain). This will output `No value returned from createMyAsset`
   - Select the `readMyAsset`, set the following `Transaction arguments` and click on `Evaluate transaction`
+
     ```json
     {
       "myAssetId": "001"
     }
     ```
+
   - You should see the following output
+
     ```console
     Returned value from readMyAsset: {"value":"Test asset 001"}
     ```
 
 - Test with the serverless API
+
   - Open the terminal in the `apis/assets` folder
   - Run `npm i` in case you haven't done it previously
   - Run `npm start` to start the API using `serverless offline`
