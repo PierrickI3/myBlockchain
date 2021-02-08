@@ -90,10 +90,11 @@ Windows only:
     - Free Trial
     - Cloud Attach Offer
   - Tickets go through specific flows
-    - Requester create a ticket and add one or more requests
+    - Requester creates a ticket and adds one or more requests
     - Requester references a Salesforce account or opportunity (automatically assigns SC & AE)
     - Approver(s) review the ticket and approves or rejects it
     - Approver(s) assign program manager and agents (team members)
+    - All assigned are notified via email
   - Access Permissions
     - Admins: full read/write access
     - Approvers: full read/write access
