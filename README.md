@@ -74,7 +74,7 @@ Using the IBM Blockchain Platform (commercial distribution of [Hyperledger Fabri
   - Tickets can contain one more more `requests`
   - Each field should be tagged for PII
   - Routing should occur via 3rd party (GC generic objects?)
-  - Each action should be logged anonymously
+  - Each action should be logged/tracked
   - Request types
     - CC request
     - Free Trial
