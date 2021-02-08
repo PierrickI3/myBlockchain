@@ -103,3 +103,65 @@ Windows only:
     - AEs: read access to tickets they are assigned to
     - External: read access to all tickets
   - How to deal with regions?
+
+## Ticketing Fields
+
+Use a form builder? [example](https://github.com/kiho/react-form-builder#readme)
+
+Tickets are the main item and contain data common to all tasks.
+A task can be of one type only (e.g. cc request, trial, cloud attach). A ticket can contain multiple tasks.
+Each task type contains the field necessary to fulfill the task.
+
+### Ticket
+
+- id
+- active
+- createdAt
+- updatedAt
+- title
+- description
+- name
+- email
+- phoneNumber
+- assigneeName
+- assigneeEmail
+- priority
+- status (open/closed)
+- company
+
+### Task
+
+- id
+- ticketId: parent id
+- userIds: Users assigned to this task
+- status: open, waiting for additional information, on hold, closed
+- typeId (see TaskTypes below)
+- programManager
+
+### TaskTypes
+
+- id
+- name: e.g. Competence Center Request
+- description
+- priority
+
+### CC Request
+
+- region
+- subRegion
+- segment
+- product
+- needCompletedBy
+- ...
+
+### Trial/POC
+
+- region
+- subRegion
+- validationType
+- existingTelephonyUsage
+- ...
+
+### Cloud Attach
+
+- TODO
