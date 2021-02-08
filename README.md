@@ -84,7 +84,7 @@ Windows only:
   - Tickets can contain one more more `requests`
   - Each field should be tagged for PII
   - Routing should occur via 3rd party (GC generic objects?)
-  - Each action should be logged anonymously
+  - Each action should be logged/tracked
   - Request types
     - CC request
     - Free Trial
