@@ -121,6 +121,8 @@ Use `fabric-common` to install and start Smart Contracts
 - Client applications can use [Events Listeners](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Contract.html)
 - All updates to the ledger can be observed using [Block Event Listeners](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Network.html)
 
+TODO: Use CAUtil.js
+
 ## Ticketing Fields
 
 Use a form builder? [example](https://github.com/kiho/react-form-builder#readme)
