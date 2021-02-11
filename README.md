@@ -104,6 +104,23 @@ Windows only:
     - External: read access to all tickets
   - How to deal with regions?
 
+### Dev Help
+
+[https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.html](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.html)
+
+Use `fabric-network` to interact with Smart Contracts (Chaincodes)
+Use `fabric-common` to install and start Smart Contracts
+
+#### Fabric-Network
+
+- Entry point is a [Gateway](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Gateway.html). Once instantiated, it provides a reusable connection to a peer within the blockchain network.
+- A `gateway` gives access to [Networks](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Network.html) (channels) for which that peer is a member.
+- A `network` gives access to Smart [Contracts](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Contract.html) running within that blockchain network.
+- Use [Transactions](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Transaction.html) to submit a `transaction` or to evaluate queries.
+- To work with private data, use [Transient](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Transaction.html#setTransient) data
+- Client applications can use [Events Listeners](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Contract.html)
+- All updates to the ledger can be observed using [Block Event Listeners](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Network.html)
+
 ## Ticketing Fields
 
 Use a form builder? [example](https://github.com/kiho/react-form-builder#readme)
@@ -116,17 +133,17 @@ Each task type contains the field necessary to fulfill the task.
 
 - id
 - active
+- status (open/closed)
 - createdAt
 - updatedAt
 - title
 - description
-- name
 - email
 - phoneNumber
 - assigneeName
 - assigneeEmail
+- assigneePhopneNumber
 - priority
-- status (open/closed)
 - company
 
 ### Task

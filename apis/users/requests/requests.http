@@ -1,0 +1,9 @@
+### Get User
+GET {{ja_basePath}}/orgs/Org1/users/Pierrick
+
+### Create User
+POST {{ja_basePath}}/orgs/Org1/users
+
+{
+  "username": "Pierrick6"
+}

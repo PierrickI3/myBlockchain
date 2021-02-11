@@ -1,4 +1,4 @@
-service: my-assets-api
+service: users-api
 
 custom:
   serverless-offline:
@@ -24,7 +24,7 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs12.x
   versionFunctions: false
   profile: genesys
   stage: dev
@@ -36,33 +36,19 @@ provider:
     STAGE: ${opt:stage, self:provider.stage}
 
 functions:
-  getAsset:
-    handler: handler.getAsset
+  getUser:
+    handler: handler.getUser
     events:
       - http:
-          path: assets/{id}
+          path: orgs/{orgName}/users/{username}
           method: get
           cors: ${self:custom.cors-config}
-  createAsset:
-    handler: handler.createAsset
+  createUser:
+    handler: handler.createUser
     events:
       - http:
-          path: assets
+          path: orgs/{orgName}/users
           method: post
-          cors: ${self:custom.cors-config}
-  updateAsset:
-    handler: handler.updateAsset
-    events:
-      - http:
-          path: assets/{id}
-          method: put
-          cors: ${self:custom.cors-config}
-  deleteAsset:
-    handler: handler.deleteAsset
-    events:
-      - http:
-          path: assets/{id}
-          method: delete
           cors: ${self:custom.cors-config}
 
 package:

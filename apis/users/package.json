@@ -1,0 +1,20 @@
+{
+  "name": "users-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "serverless offline start --noPrependStageInUrl"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "serverless-offline": "^6.8.0"
+  },
+  "dependencies": {
+    "fabric-client": "^1.4.17",
+    "fabric-common": "^2.2.5",
+    "fabric-network": "^2.2.5"
+  }
+}
