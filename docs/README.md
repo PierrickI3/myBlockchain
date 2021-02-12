@@ -33,6 +33,9 @@ Windows only:
   - Choose the first configuration `1 Org template (1 CA, 1 peer, 1 channel)`
   - Enter `ccTickets` for the environment name
   - Select the `V2_0` channel version and wait for the network to be created
+- Download the connection file
+  - In the `IBM Blockchain Platform` sidebar section, right click on the `Org1 Gateway` item and select `Export Connection Profile`
+  - Save it in the `apis/config` folder and name it `connection-org1.json` (overwrite the existing file if needed)
 - Deploy the smart contract
   - Press `CMD+SHIFT+P` and select the `IBM Blockchain Platform: Deploy Smart Contract` option
   - Select the `ccTickets` environment

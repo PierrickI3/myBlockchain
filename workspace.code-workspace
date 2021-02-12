@@ -1,10 +1,13 @@
 {
   "folders": [
     {
-      "path": "asset"
+      "path": "apis"
     },
     {
-      "path": "."
+      "path": "docs"
+    },
+    {
+      "path": "smartContracts\\asset"
     }
   ],
   "settings": {

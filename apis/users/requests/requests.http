@@ -5,5 +5,5 @@ GET {{ja_basePath}}/orgs/Org1/users/Pierrick
 POST {{ja_basePath}}/orgs/Org1/users
 
 {
-  "username": "Pierrick6"
+  "username": "Pierrick7"
 }

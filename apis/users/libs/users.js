@@ -1,9 +1,8 @@
 'use strict';
 
 //const constants = require('../../config/constants.json');
-const { Gateway, Wallets } = require('fabric-network');
+const { Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
-const { User } = require('fabric-client');
 const path = require('path');
 const fs = require('fs');
 
@@ -36,7 +35,7 @@ const getWalletPath = async (org) => {
   return walletPath;
 };
 
-const getAffiliation = async (org) => {
+const getAffiliation = (org) => {
   if (!org) return null;
 
   let affiliation = `${org.toLowerCase()}.department1`;
@@ -137,7 +136,7 @@ module.exports.create = async (username, org) => {
     console.log(`[create] An identity for the user ${username} already exists in the wallet`);
     var response = {
       success: true,
-      message: username + ' enrolled successfully (already exists)',
+      message: username + ' already exists',
     };
     return response;
   }
@@ -155,11 +154,18 @@ module.exports.create = async (username, org) => {
   //console.log('[create] adminIdentity:', adminIdentity);
   const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
   const adminUser = await provider.getUserContext(adminIdentity, 'admin');
+
+  let affiliation = getAffiliation(org);
+  console.log('[create] Affiliation:', affiliation);
+
   let secret;
   try {
-    // Register the user, enroll the user, and import the new identity into the wallet.
-    secret = await ca.register({ affiliation: await getAffiliation(org), enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
+    // Register the user
+    console.log('[create] Registering user');
+    secret = await ca.register({ affiliation: affiliation, enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
     console.log('[create] secret:', secret);
+
+    // Enroll the user
     let enrollment = await ca.enroll({
       enrollmentID: username,
       enrollmentSecret: secret,
@@ -167,6 +173,8 @@ module.exports.create = async (username, org) => {
     //console.log('[create] User enrolled:', enrollmentResponse);
     console.log('[create] User enrolled');
 
+    // Import the new identity into the wallet
+    console.log('[create] Importing new identity into the wallet');
     const x509Identity = {
       credentials: {
         certificate: enrollment.certificate,
@@ -177,6 +185,7 @@ module.exports.create = async (username, org) => {
     };
     await wallet.put(username, x509Identity);
   } catch (error) {
+    console.error(error);
     return error.message;
   }
 
@@ -187,41 +196,3 @@ module.exports.create = async (username, org) => {
   };
   return response;
 };
-
-// const gateway = new Gateway();
-// const gatewayOptions = {
-//   wallet,
-//   identity: 'admin',
-//   discovery: {
-//     enabled: true,
-//     asLocalhost: true,
-//   },
-// };
-// console.log('[create] Connecting to gateway using:', gatewayOptions);
-// await gateway.connect(connectionProfile, gatewayOptions);
-
-// let adminUsername = 'admin';
-// let pass = 'adminpw';
-// let msp = 'Org1MSP';
-// let orgName = 'Org1MSP';
-// let channelName = 'mychannel';
-// let connFile = 'connection_test.json';
-
-// const walletPath = await getWalletPath(orgName);
-// const wallet = await Wallets.newFileSystemWallet(walletPath);
-
-// const caURL = await getCaUrl(org, connectionProfile);
-// const ca = new FabricCAServices(caURL);
-
-// let user = wallet.get(adminUsername);
-// // Check to see if we've already enrolled the admin user.
-// if (user == null) {
-//   console.log('Enroll admin user');
-//   await enrollAdmin(orgName, connectionProfile);
-//   // Enroll the admin user, and import the new identity into the wallet.
-//   let enrollment = ca.enroll(adminUsername, pass);
-//   user = user = Identities.newX509Identity(msp, enrollment);
-//   wallet.put(userName, user);
-// }
-
-//secret = await ca.register({ affiliation: await getAffiliation(org), enrollmentID: username, role: 'client' }, adminUser);
