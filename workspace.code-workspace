@@ -7,7 +7,7 @@
       "path": "docs"
     },
     {
-      "path": "smartContracts\\asset"
+      "path": "smartContracts\\smartContract-asset"
     }
   ],
   "settings": {
