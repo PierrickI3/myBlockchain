@@ -8,8 +8,5 @@ GET {{ja_basePath}}/orgs/Org1/users/Pierrick8
 POST {{ja_basePath}}/orgs/Org1/users
 
 {
-  "username": "Pierrick7"
+  "username": "Pierrick10"
 }
-
-### Delete User
-DELETE {{ja_basePath}}/orgs/Org1/users/Pierrick8

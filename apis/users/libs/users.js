@@ -1,10 +1,10 @@
 'use strict';
 
-//const constants = require('../../config/constants.json');
 const { Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
 const path = require('path');
 const fs = require('fs');
+const CDBKVS = require('fabric-client/lib/impl/CouchDBKeyValueStore.js');
 
 const getConnectionProfile = async (org) => {
   if (!org) return null;
@@ -29,7 +29,7 @@ const getCaUrl = async (org, connectionProfile) => {
 const getWalletPath = async (org) => {
   if (!org) return null;
 
-  let walletPath = path.join(process.cwd(), `${org.toLowerCase()}-wallet`);
+  let walletPath = path.resolve(__dirname, '../..', 'wallets', `${org.toLowerCase()}-wallet`);
   console.log('[getWalletPath] Wallet path:', walletPath);
 
   return walletPath;
@@ -172,6 +172,8 @@ module.exports.create = async (username, org) => {
     console.log('[create] Registering user');
     secret = await ca.register({ affiliation: affiliation, enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
     console.log('[create] secret:', secret);
+
+    // Store secret somewhere
 
     // Enroll the user
     let enrollment = await ca.enroll({

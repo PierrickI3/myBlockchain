@@ -1,0 +1,9 @@
+### Authenticate User
+POST {{ja_basePath}}/auth/
+
+{
+  "org": "Org1",
+  "username": "Pierrick10"
+}
+
+//htXxKYyEuMMl

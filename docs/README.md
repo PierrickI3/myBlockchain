@@ -24,63 +24,73 @@ Windows only:
 
 ### Getting Started
 
-- Clone this repo and run `npm i` in the `apis` and `asset` folders
-- Open the workspace in vscode
-- Create a local Hyperledger Fabric network
-  - Open the IBM Blockchain Platform addon (square icon in the left-side toolbar)
-  - Click on `+ Add local or remote environment`
-  - Select the `Create new from template` option
-  - Choose the first configuration `1 Org template (1 CA, 1 peer, 1 channel)`
-  - Enter `ccTickets` for the environment name
-  - Select the `V2_0` channel version and wait for the network to be created
+#### Create local network
+
+- Open the workspace file in vscode
+- Open the IBM Blockchain Platform addon (square icon in the left-side toolbar)
+- Click on `+ Add local or remote environment`
+- Select the `Create new from template` option
+- Choose the first configuration `1 Org template (1 CA, 1 peer, 1 channel)`
+- Enter `ccTickets` for the environment name
+- Select the `V2_0` channel version and wait for the network to be created
 - Download the connection file
   - In the `IBM Blockchain Platform` sidebar section, right click on the `Org1 Gateway` item and select `Export Connection Profile`
-  - Save it in the `apis/config` folder and name it `connection-org1.json` (overwrite the existing file if needed)
-- Deploy the smart contract
-  - Press `CMD+SHIFT+P` and select the `IBM Blockchain Platform: Deploy Smart Contract` option
-  - Select the `ccTickets` environment
-  - In the new window, select the `asset (open project)` option from the `Select smart contract` list
-  - Click on `Package open project`. Later on, to re-deploy, you will need to update the version in your `package.json` file
-  - Click on `Next` on the top-right
-  - Leave the default values and click on `Next` again
-  - Click on `Deploy`
-- Test the smart contract
+  - Save it to the `apis/config/connection-org1.json` (overwrite the existing file if there is one)
 
-  - Press `CMD+SHIFT+P` and select the `IBM Blockchain Platform: Transact with Smart Contract` option
-  - Select the `Org1 Gateway`
-  - Select the `MyAsset` smart contract
-  - In the new window, select the `createMyAsset` transaction
-  - In the `Transaction arguments` textbox, enter:
+#### Deploy the smart contract
 
-    ```json
-    {
-      "myAssetId": "001",
-      "value": "Test asset 001 "
-    }
-    ```
+- Press `CMD+SHIFT+P` and select the `IBM Blockchain Platform: Deploy Smart Contract` option
+- Select the `ccTickets` environment
+- In the new window, select the `asset (open project)` option from the `Select smart contract` list
+- Click on `Package open project`. Later on, to re-deploy, you will need to update the version in your `package.json` file
+- Click on `Next` on the top-right
+- Leave the default values and click on `Next` again
+- Click on `Deploy`
 
-  - Click on `Submit transaction` (use `Evaluate transaction` when the operation does not require a change in the blockchain). This will output `No value returned from createMyAsset`
-  - Select the `readMyAsset`, set the following `Transaction arguments` and click on `Evaluate transaction`
+#### APIs
 
-    ```json
-    {
-      "myAssetId": "001"
-    }
-    ```
+- Open a terminal
+- Run `npm i` from the following folders:
 
-  - You should see the following output
+  - `apis/libs`
+  - `apis/assets`
+  - `apis/users`
+  - `apis/auth`
 
-    ```console
-    Returned value from readMyAsset: {"value":"Test asset 001"}
-    ```
+- Set a new environment variable: `export SECRET=<WHATEVER YOU WANT HERE>`. This will be used to encrypt tokens.
+- Start all APIs by running `npm start` from the `apis` folder
 
-- Test with the serverless API
+#### Test the smart contract
 
-  - Open the terminal in the `apis/assets` folder
-  - Run `npm i` in case you haven't done it previously
-  - Run `npm start` to start the API using `serverless offline`
-  - Wait until the API is started and open the `apis/assets/requests/request.http` in vscode
-  - Click on each API to test them
+- Press `CMD+SHIFT+P` and select the `IBM Blockchain Platform: Transact with Smart Contract` option
+- Select the `Org1 Gateway`
+- Select the `MyAsset` smart contract
+- In the new window, select the `createMyAsset` transaction
+- In the `Transaction arguments` textbox, enter:
+
+  ```json
+  {
+    "myAssetId": "001",
+    "value": "Test asset 001 "
+  }
+  ```
+
+- Click on `Submit transaction` (use `Evaluate transaction` when the operation does not require a change in the blockchain). This will output `No value returned from createMyAsset`
+- Select the `readMyAsset`, set the following `Transaction arguments` and click on `Evaluate transaction`
+
+  ```json
+  {
+    "myAssetId": "001"
+  }
+  ```
+
+- You should see the following output
+
+  ```console
+  Returned value from readMyAsset: {"value":"Test asset 001"}
+  ```
+
+### Ticketing notes
 
 - What now? Ticketing system should process tickets as follows
   - Tickets contain user info
@@ -123,8 +133,6 @@ Use `fabric-common` to install and start Smart Contracts
 - To work with private data, use [Transient](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Transaction.html#setTransient) data
 - Client applications can use [Events Listeners](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Contract.html)
 - All updates to the ledger can be observed using [Block Event Listeners](https://hyperledger.github.io/fabric-sdk-node/release-2.2/module-fabric-network.Network.html)
-
-TODO: Use CAUtil.js
 
 ## Ticketing Fields
 
