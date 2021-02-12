@@ -36,19 +36,33 @@ provider:
     STAGE: ${opt:stage, self:provider.stage}
 
 functions:
+  getUsers:
+    handler: handler.getUsers
+    events:
+      - http:
+          path: orgs/{org}/users
+          method: get
+          cors: ${self:custom.cors-config}
   getUser:
     handler: handler.getUser
     events:
       - http:
-          path: orgs/{orgName}/users/{username}
+          path: orgs/{org}/users/{username}
           method: get
           cors: ${self:custom.cors-config}
   createUser:
     handler: handler.createUser
     events:
       - http:
-          path: orgs/{orgName}/users
+          path: orgs/{org}/users
           method: post
+          cors: ${self:custom.cors-config}
+  deleteUser:
+    handler: handler.deleteUser
+    events:
+      - http:
+          path: orgs/{org}/users/{username}
+          method: delete
           cors: ${self:custom.cors-config}
 
 package:

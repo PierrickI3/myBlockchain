@@ -66,10 +66,6 @@ async function isUserRegistered(username, org) {
   return false;
 }
 
-module.exports.get = async (username, org) => {
-  return isUserRegistered(username, org);
-};
-
 const enrollAdmin = async (org, ccp) => {
   console.log('calling enroll Admin method');
 
@@ -125,6 +121,17 @@ const enrollAdmin = async (org, ccp) => {
   }
 };
 
+module.exports.getAll = async (org) => {
+  const walletPath = await getWalletPath(org);
+  const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+  return wallet.list();
+};
+
+module.exports.get = async (username, org) => {
+  return isUserRegistered(username, org);
+};
+
 module.exports.create = async (username, org) => {
   let connectionProfile = await getConnectionProfile(org);
   const caURL = await getCaUrl(org, connectionProfile);
@@ -132,6 +139,7 @@ module.exports.create = async (username, org) => {
   const walletPath = await getWalletPath(org);
   const wallet = await Wallets.newFileSystemWallet(walletPath);
 
+  // Check if the user exists already
   if (await isUserRegistered(username, org)) {
     console.log(`[create] An identity for the user ${username} already exists in the wallet`);
     var response = {
@@ -150,14 +158,14 @@ module.exports.create = async (username, org) => {
     console.log('[create] Admin Enrolled Successfully');
   }
 
-  // Build a user object for authenticating with the CA
-  //console.log('[create] adminIdentity:', adminIdentity);
+  // Act on behalf of the admin user
   const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
   const adminUser = await provider.getUserContext(adminIdentity, 'admin');
 
   let affiliation = getAffiliation(org);
   console.log('[create] Affiliation:', affiliation);
 
+  // Register and enroll the user then save to wallet
   let secret;
   try {
     // Register the user
@@ -193,6 +201,58 @@ module.exports.create = async (username, org) => {
     success: true,
     message: username + ' enrolled successfully (final)',
     secret: secret,
+  };
+  return response;
+};
+
+module.exports.delete = async (username, org) => {
+  let connectionProfile = await getConnectionProfile(org);
+  const caURL = await getCaUrl(org, connectionProfile);
+  const ca = new FabricCAServices(caURL);
+  const walletPath = await getWalletPath(org);
+  const wallet = await Wallets.newFileSystemWallet(walletPath);
+
+  // Check if the user exists already
+  if (!(await isUserRegistered(username, org))) {
+    console.log(`[create] ${username} not found in the wallet`);
+    var response = {
+      success: true,
+      message: username + ' not found',
+    };
+    return response;
+  }
+
+  // Check to see if the admin user is already enrolled
+  let adminIdentity = await wallet.get('admin');
+  if (!adminIdentity) {
+    console.log('[create] An identity for the admin user "admin" does not exist in the wallet');
+    await enrollAdmin(org, connectionProfile);
+    adminIdentity = await wallet.get('admin');
+    console.log('[create] Admin Enrolled Successfully');
+  }
+
+  // Act on behalf of the admin user
+  const provider = wallet.getProviderRegistry().getProvider(adminIdentity.type);
+  const adminUser = await provider.getUserContext(adminIdentity, 'admin');
+
+  // Register and enroll the user then save to wallet
+  try {
+    // Revoke the user's certificate
+    console.log('[create] Revoking user certificate');
+    await ca.revoke({ enrollmentID: username, reason: 'Unspecified' }, adminUser); // Reasons: https://pkg.go.dev/golang.org/x/crypto/ocsp (search for 'reason')
+    console.log('[create] User certificate revoked');
+
+    // Delete the user from the wallet
+    console.log('[create] Removing identity from the wallet');
+    await wallet.remove(username);
+  } catch (error) {
+    console.error(error);
+    return error.message;
+  }
+
+  var response = {
+    success: true,
+    message: username + '  deleted successfully',
   };
   return response;
 };
