@@ -138,6 +138,7 @@ Use `fabric-common` to install and start Smart Contracts
 
 Here is what I still do not know or do not understand:
 
+- Where should wallets be stored? S3? CouchDB?
 - Where should the user's secret be stored? Once stored, we need to validate the password when a user logs in and then issue the token
 
 ## Ticketing Fields
