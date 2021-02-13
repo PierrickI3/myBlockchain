@@ -1,0 +1,40 @@
+--- #---------------- Orderer0 Service ---------------
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: orderer
+  name: orderer0
+  namespace: hyperledger
+spec:
+  type: NodePort
+  ports:
+    - name: "orderer"
+      port: 7050
+      targetPort: 7050
+      nodePort: 31050
+    - name: "admin"
+      port: 7053
+      targetPort: 7053
+      nodePort: 31053
+  selector:
+    app: orderer
+---
+#---------------- Orderer0 Metrics Service ---------------
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: orderer
+    metrics-service: "true"
+  name: orderer0-metrics
+  namespace: hyperledger
+spec:
+  type: NodePort
+  ports:
+    - name: "orderer-metrics"
+      port: 8443
+      targetPort: 8443
+      nodePort: 31443
+  selector:
+    app: orderer
