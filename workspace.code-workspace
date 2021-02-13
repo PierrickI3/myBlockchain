@@ -8,6 +8,9 @@
     },
     {
       "path": "smartContracts/smartContract-asset"
+    },
+    {
+      "path": "studies"
     }
   ],
   "settings": {
