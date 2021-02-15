@@ -1,0 +1,57 @@
+service: auth-api
+
+custom:
+  serverless-offline:
+    httpPort: 4000
+    useChildProcesses: true
+    noAuth: true
+  prune:
+    automatic: true
+    number: 1
+  cors-config:
+    origins:
+      - '*'
+    headers:
+      - Content-Type
+      - X-Amz-Date
+      - Authorization
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Amz-User-Agent
+      - env
+      - token
+    allowCredentials: false
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  versionFunctions: false
+  profile: genesys
+  stage: dev
+  region: eu-central-1
+  tracing:
+    lambda: true
+  logRetentionInDays: 30
+  environment:
+    STAGE: ${opt:stage, self:provider.stage}
+
+functions:
+  auth:
+    handler: handler.auth
+    events:
+      - http:
+          path: /auth
+          method: post
+          cors: ${self:custom.cors-config}
+package:
+  exclude:
+    - .nyc_output/**
+    - coverage/**
+    - test/**
+    - .git/**
+    - serverless.yml
+    - .serverless/**
+    - requests.http
+
+plugins:
+  - serverless-offline

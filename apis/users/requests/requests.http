@@ -1,9 +1,12 @@
+### Get Users
+GET {{ja_basePath}}/orgs/Org1/users
+
 ### Get User
-GET {{ja_basePath}}/orgs/Org1/users/Pierrick
+GET {{ja_basePath}}/orgs/Org1/users/Pierrick8
 
 ### Create User
 POST {{ja_basePath}}/orgs/Org1/users
 
 {
-  "username": "Pierrick7"
+  "username": "Pierrick10"
 }

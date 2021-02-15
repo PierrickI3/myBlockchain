@@ -1,0 +1,133 @@
+--- #---------------- Orderer0 Deployment ---------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: orderer
+  name: orderer0
+  namespace: hyperledger
+spec:
+  selector:
+    matchLabels:
+      app: orderer
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: orderer
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: "app"
+                      operator: In
+                      values:
+                        - orderer1
+                        - orderer2
+                topologyKey: "kubernetes.io/hostname"
+      containers:
+        - args:
+            - orderer
+          env:
+            - name: FABRIC_LOGGING_SPEC
+              value: INFO
+
+            # General Settings
+            - name: ORDERER_GENERAL_LISTENADDRESS
+              value: "0.0.0.0"
+            - name: ORDERER_GENERAL_LISTENPORT
+              value: "7050"
+            - name: ORDERER_GENERAL_LOCALMSPID
+              value: OrdererMSP
+            - name: ORDERER_GENERAL_LOCALMSPDIR
+              value: /var/hyperledger/orderer/msp
+            - name: ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE
+              value: /var/hyperledger/orderer/tls/server.crt
+            - name: ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY
+              value: /var/hyperledger/orderer/tls/server.key
+            - name: ORDERER_GENERAL_CLUSTER_ROOTCAS
+              value: "[/var/hyperledger/orderer/tls/ca.crt]"
+            - name: ORDERER_GENERAL_BOOTSTRAPMETHOD
+              value: none
+            - name: ORDERER_CHANNELPARTICIPATION_ENABLED
+              value: "true"
+            - name: ORDERER_GENERAL_TLS_ENABLED
+              value: "true"
+            - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+              value: /var/hyperledger/orderer/tls/server.key
+            - name: ORDERER_GENERAL_TLS_CERTIFICATE
+              value: /var/hyperledger/orderer/tls/server.crt
+            - name: ORDERER_GENERAL_TLS_ROOTCAS
+              value: "[/var/hyperledger/orderer/tls/ca.crt]"
+
+            # Admin Settings
+            - name: ORDERER_ADMIN_LISTENADDRESS
+              value: "0.0.0.0:7053"
+            - name: ORDERER_ADMIN_TLS_ENABLED
+              value: "true"
+            - name: ORDERER_ADMIN_TLS_CERTIFICATE
+              value: /var/hyperledger/orderer/tls/server.crt
+            - name: ORDERER_ADMIN_TLS_PRIVATEKEY
+              value: /var/hyperledger/orderer/tls/server.key
+            - name: ORDERER_ADMIN_TLS_ROOTCAS
+              value: "[/var/hyperledger/orderer/tls/ca.crt]"
+            - name: ORDERER_ADMIN_TLS_CLIENTROOTCAS
+              value: "[/var/hyperledger/orderer/tls/ca.crt]"
+
+            # Kafka
+            - name: ORDERER_KAFKA_TOPIC_REPLICATIONFACTOR
+              value: "1"
+            - name: ORDERER_KAFKA_VERBOSE
+              value: "true"
+
+            # - name: ORDERER_OPERATIONS_LISTENADDRESS
+            #   value: 0.0.0.0:8443
+            # - name: ORDERER_METRICS_PROVIDER
+            #   value: prometheus
+            # - name: ORDERER_GENERAL_GENESISFILE
+            #   value: /var/hyperledger/orderer/genesis.block
+            # - name: ORDERER_GENERAL_GENESISMETHOD
+            #   value: file
+          image: hyperledger/fabric-orderer:2.3.0
+          name: orderer
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric
+          ports:
+            - containerPort: 7050
+              hostPort: 7050
+            - containerPort: 7053
+              hostPort: 7053
+          volumeMounts:
+            - name: orderer-claim0
+              mountPath: /var/hyperledger/orderer/orderer.genesis.block
+            - name: orderer-claim1
+              mountPath: /var/hyperledger/orderer/msp
+            - name: orderer-claim2
+              mountPath: /var/hyperledger/orderer/tls
+          workingDir: /opt/gopath/src/github.com/hyperledger/fabric
+      restartPolicy: Always
+      volumes:
+        - name: fabricfiles
+          persistentVolumeClaim:
+            claimName: fabric-pvc
+        # - name: orderer-persistentdata
+        #   hostPath:
+        #     path: /var/hyperledger/production/orderer
+        #     type: DirectoryOrCreate
+        - name: orderer-claim0
+          hostPath:
+            path: /var/hyperledger/orderer/orderer.genesis.block
+            type: DirectoryOrCreate
+        - name: orderer-claim1
+          hostPath:
+            path: /var/hyperledger/orderer/msp
+            type: DirectoryOrCreate
+        - name: orderer-claim2
+          hostPath:
+            path: /var/hyperledger/orderer/tls
+            type: DirectoryOrCreate

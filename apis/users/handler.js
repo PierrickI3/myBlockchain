@@ -6,12 +6,24 @@ const Users = require('./libs/users');
 
 //#endregion
 
+module.exports.getUsers = async (event) => {
+  try {
+    const org = RequestHelper.getPathParameter(event, 'org', undefined);
+
+    let usersResponse = await Users.getAll(org);
+    console.log('Response:', usersResponse);
+    return ResponseHelper.success(usersResponse);
+  } catch (error) {
+    return RequestHelper.handleError(error, true);
+  }
+};
+
 module.exports.getUser = async (event) => {
   try {
     const username = RequestHelper.getPathParameter(event, 'username', undefined);
-    const orgName = RequestHelper.getPathParameter(event, 'orgName', undefined);
+    const org = RequestHelper.getPathParameter(event, 'org', undefined);
 
-    let isUserRegisteredResponse = await Users.get(username, orgName);
+    let isUserRegisteredResponse = await Users.get(username, org);
     console.log('Response:', isUserRegisteredResponse);
     return isUserRegisteredResponse ? ResponseHelper.success(isUserRegisteredResponse) : ResponseHelper.notFound();
   } catch (error) {
@@ -30,42 +42,35 @@ module.exports.createUser = async (event) => {
       throw new Error('Missing username');
     }
 
-    const orgName = RequestHelper.getPathParameter(event, 'orgName', undefined);
-    if (!orgName) {
-      throw new Error('Missing orgName');
+    const org = RequestHelper.getPathParameter(event, 'org', undefined);
+    if (!org) {
+      throw new Error('Missing org');
     }
 
     //#endregion
 
-    let response = await Users.create(username, orgName);
+    let response = await Users.create(username, org);
     return ResponseHelper.success(response);
   } catch (error) {
     return RequestHelper.handleError(error, true);
   }
 };
 
-// module.exports.updateAsset = async (event) => {
-//   try {
-//     const id = RequestHelper.getPathParameter(event, 'id', undefined);
-//     const body = RequestHelper.getBody(event);
-//     const value = body.value;
+module.exports.deleteUser = async (event) => {
+  try {
+    const org = RequestHelper.getPathParameter(event, 'org', undefined);
+    if (!org) {
+      throw new Error('Missing org');
+    }
 
-//     let asset = new Asset();
-//     let response = await asset.update(id, value);
-//     return ResponseHelper.success(response);
-//   } catch (error) {
-//     return RequestHelper.handleError(error, true);
-//   }
-// };
+    const username = RequestHelper.getPathParameter(event, 'username', undefined);
+    if (!username) {
+      throw new Error('Missing username');
+    }
 
-// module.exports.deleteAsset = async (event) => {
-//   try {
-//     const id = RequestHelper.getPathParameter(event, 'id', undefined);
-
-//     let asset = new Asset();
-//     let response = await asset.delete(id);
-//     return ResponseHelper.success(response);
-//   } catch (error) {
-//     return RequestHelper.handleError(error, true);
-//   }
-// };
+    await Users.delete(username, org);
+    return ResponseHelper.noContent();
+  } catch (error) {
+    return RequestHelper.handleError(error, true);
+  }
+};

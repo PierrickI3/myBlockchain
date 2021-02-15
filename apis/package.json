@@ -1,0 +1,17 @@
+{
+  "name": "myBlockchain-lambdas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "runAll.js",
+  "scripts": {
+    "start": "export AWS_REGION=eu-central-1 && export AWS_PROFILE=ccportal && node runAll",
+    "startwin": "cross-env-shell AWS_REGION=eu-central-1 AWS_PROFILE=ccportal node runAll"
+  },
+  "keywords": [],
+  "author": "Pierrick Lozach <pierrick.lozach@genesys.com> (genesys.com)",
+  "license": "ISC",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "http-proxy": "^1.18.1"
+  }
+}
