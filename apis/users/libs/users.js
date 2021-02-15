@@ -162,7 +162,21 @@ module.exports.create = async (username, org) => {
   try {
     // Register the user
     console.log('[create] Registering user');
-    secret = await ca.register({ affiliation: affiliation, enrollmentID: username, role: 'client', attrs: [{ name: 'role', value: 'approver', ecert: true }] }, adminUser);
+    secret = await ca.register(
+      {
+        affiliation: affiliation,
+        enrollmentID: username,
+        role: 'client',
+        attrs: [
+          {
+            name: 'role',
+            value: 'approver',
+            ecert: true,
+          },
+        ],
+      },
+      adminUser
+    );
     console.log('[create] secret:', secret);
 
     // Enroll the user
